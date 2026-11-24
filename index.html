@@ -1,0 +1,1451 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.2/font/bootstrap-icons.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProfeHub</title>
+    <style>
+      :root {
+        /* Cores Principais da Marca */
+        --cor-primaria: #1e40af;
+        --cor-primaria-hover: #1e3a8a;
+        --cor-primaria-clara: #3b82f6;
+        --cor-primaria-suave: #dbeafe;
+        --cor-secundaria: #f59e0b;
+        --cor-secundaria-hover: #d97706;
+        --cor-secundaria-suave: #fef3c7;
+
+        /* Gradientes */
+        --grad-hero: linear-gradient(
+          135deg,
+          #1e3a8a 0%,
+          #1e40af 55%,
+          #3b82f6 100%
+        );
+        --grad-botao: linear-gradient(135deg, #2563eb, #1e40af);
+        --grad-destaque: linear-gradient(90deg, #3b82f6, #f59e0b);
+        --grad-cta: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        --grad-pagina:
+          radial-gradient(circle at top right, #dbeafe 0%, transparent 40%),
+          radial-gradient(circle at bottom left, #fef3c7 0%, transparent 38%);
+
+        /* Fundos (Superfícies) */
+        --bg-pagina: #f8fafc;
+        --bg-card: #ffffff;
+        --bg-input: #f1f5f9;
+        --bg-header: rgba(255, 255, 255, 0.88);
+        --bg-overlay: rgba(15, 23, 42, 0.5);
+        --bg-vidro: rgba(255, 255, 255, 0.14);
+
+        /* Textos */
+        --texto-principal: #0f172a;
+        --texto-secundario: #475569;
+        --texto-placeholder: #94a3b8;
+        --texto-inverso: #ffffff;
+
+        /* Bordas e Divisores */
+        --borda-suave: #e2e8f0;
+
+        /* Feedback e Status */
+        --cor-sucesso: #10b981;
+        --cor-erro: #ef4444;
+        --cor-erro-escura: #b91c1c;
+        --cor-erro-suave: #fee2e2;
+        --cor-sucesso-suave: #d1fae5;
+
+        /* Formas */
+        --raio-pequeno: 12px;
+        --raio-medio: 20px;
+        --raio-grande: 32px;
+        --raio-pilula: 999px;
+
+        /* Sombras */
+        --sombra-suave: 0 2px 10px rgba(15, 23, 42, 0.06);
+        --sombra-card: 0 10px 30px rgba(15, 23, 42, 0.08);
+        --sombra-elevada: 0 16px 40px rgba(15, 23, 42, 0.14);
+        --sombra-azul: 0 8px 20px rgba(30, 64, 175, 0.3);
+        --anel-foco: 0 0 0 4px rgba(59, 130, 246, 0.25);
+
+        /* Movimento */
+        --transicao: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          Roboto,
+          sans-serif;
+        background: var(--grad-pagina), var(--bg-pagina);
+        background-attachment: fixed;
+        color: var(--texto-principal);
+        line-height: 1.6;
+      }
+
+      :focus-visible {
+        outline: 3px solid var(--cor-secundaria);
+        outline-offset: 2px;
+      }
+
+      /* ---------- Header ---------- */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        background: var(--bg-header);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-bottom: 3px solid var(--cor-primaria);
+        box-shadow: var(--sombra-suave);
+      }
+
+      header ul {
+        list-style: none;
+      }
+
+      .btn-menu {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border: none;
+        border-radius: var(--raio-pequeno);
+        background: transparent;
+        color: var(--cor-primaria);
+        font-size: 30px;
+        cursor: pointer;
+        transition:
+          background var(--transicao),
+          color var(--transicao),
+          transform var(--transicao);
+      }
+
+      .btn-menu:hover,
+      .btn-menu:focus-visible {
+        background: var(--cor-primaria-suave);
+        color: var(--cor-primaria-hover);
+      }
+
+      .btn-menu:active {
+        transform: scale(0.94);
+      }
+
+      .btn-foto {
+        display: flex;
+        cursor: pointer;
+        align-items: center;
+        gap: 8px;
+        border-radius: var(--raio-pilula);
+        padding: 4px 12px 4px 6px;
+        font-weight: 700;
+        color: var(--cor-primaria);
+        transition: background var(--transicao);
+      }
+
+      .btn-foto:hover {
+        background: var(--cor-primaria-suave);
+      }
+
+      .btn-foto i {
+        font-size: 32px;
+        color: var(--cor-primaria);
+        transition:
+          transform var(--transicao),
+          color var(--transicao);
+      }
+
+      .btn-foto:hover i {
+        color: var(--cor-primaria-hover);
+        transform: scale(1.1);
+      }
+
+      /* ---------- Menu lateral ---------- */
+      .menu-lateral {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 50;
+        width: min(290px, 82vw);
+        height: 100vh;
+        padding: 20px;
+        background: var(--bg-card);
+        border-radius: 0 var(--raio-medio) var(--raio-medio) 0;
+        box-shadow: 12px 0 32px rgba(15, 23, 42, 0.18);
+        transform: translateX(-105%);
+        transition: transform var(--transicao);
+      }
+
+      .menu-lateral.aberto {
+        transform: translateX(0);
+      }
+
+      .menu-lateral__cabecalho {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 28px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--borda-suave);
+      }
+
+      .menu-lateral__cabecalho strong {
+        color: var(--cor-primaria);
+        font-size: 1.25rem;
+        letter-spacing: 0.06em;
+      }
+
+      .btn-fechar-menu {
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 10px;
+        background: var(--bg-input);
+        color: var(--texto-principal);
+        font-size: 20px;
+        cursor: pointer;
+        transition:
+          background var(--transicao),
+          color var(--transicao);
+      }
+
+      .btn-fechar-menu:hover {
+        background: var(--cor-erro-suave);
+        color: var(--cor-erro-escura);
+      }
+
+      .menu-lateral nav {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .menu-lateral a,
+      .menu-lateral button {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        min-height: 48px;
+        padding: 12px 14px;
+        border: none;
+        border-radius: var(--raio-pequeno);
+        background: transparent;
+        color: var(--texto-principal);
+        font: inherit;
+        font-weight: 700;
+        text-align: left;
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          background var(--transicao),
+          color var(--transicao),
+          transform var(--transicao);
+      }
+
+      .menu-lateral a:hover,
+      .menu-lateral button:hover {
+        background: var(--cor-primaria-suave);
+        color: var(--cor-primaria);
+        transform: translateX(4px);
+      }
+
+      .menu-lateral i {
+        color: var(--cor-primaria);
+        font-size: 20px;
+      }
+
+      .menu-lateral #btn-sair {
+        margin-top: 12px;
+        color: var(--cor-erro-escura);
+      }
+
+      .menu-lateral #btn-sair:hover {
+        background: var(--cor-erro-suave);
+        color: var(--cor-erro-escura);
+      }
+
+      .menu-lateral #btn-sair i {
+        color: var(--cor-erro);
+      }
+
+      .menu-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        display: none;
+        background: var(--bg-overlay);
+        backdrop-filter: blur(2px);
+      }
+
+      .menu-overlay.aberto {
+        display: block;
+        animation: aparecer 0.2s ease both;
+      }
+
+      /* ---------- Hero ---------- */
+      .hero {
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        padding: 64px 20px 90px;
+        background: var(--grad-hero);
+        color: var(--texto-inverso);
+        border-radius: 0 0 var(--raio-grande) var(--raio-grande);
+        box-shadow: 0 14px 34px rgba(30, 64, 175, 0.3);
+      }
+
+      .hero::before,
+      .hero::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        background: var(--bg-vidro);
+        pointer-events: none;
+      }
+
+      .hero::before {
+        width: 260px;
+        height: 260px;
+        top: -90px;
+        right: -60px;
+      }
+
+      .hero::after {
+        width: 180px;
+        height: 180px;
+        bottom: -70px;
+        left: -40px;
+        background: rgba(245, 158, 11, 0.22);
+      }
+
+      .hero h1,
+      .hero p {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.4rem, 9vw, 3.8rem);
+        letter-spacing: 4px;
+        margin-bottom: 10px;
+        text-shadow: 0 4px 18px rgba(15, 23, 42, 0.25);
+        animation: subir 0.6s ease both;
+      }
+
+      .hero h1 span {
+        color: var(--cor-secundaria);
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+        opacity: 0.92;
+        animation: subir 0.6s 0.12s ease both;
+      }
+
+      /* ---------- Conteúdo ---------- */
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 20px;
+        text-align: center;
+      }
+
+      .card {
+        position: relative;
+        overflow: hidden;
+        background: var(--bg-card);
+        border: 1px solid var(--borda-suave);
+        border-radius: var(--raio-medio);
+        padding: 34px 24px 28px;
+        margin-top: -50px;
+        box-shadow: var(--sombra-card);
+        animation: subir 0.6s 0.2s ease both;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: var(--grad-destaque);
+      }
+
+      .card h3 {
+        color: var(--cor-primaria);
+        font-size: 1.35rem;
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+      }
+
+      .card > span {
+        display: block;
+        color: var(--texto-secundario);
+        margin-bottom: 24px;
+      }
+
+      .lista {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        text-align: left;
+      }
+
+      .lista li {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: var(--bg-input);
+        border: 1px solid var(--borda-suave);
+        border-radius: 14px;
+        padding: 14px 16px;
+        transition:
+          transform var(--transicao),
+          border-color var(--transicao),
+          box-shadow var(--transicao),
+          background var(--transicao);
+      }
+
+      .lista li:hover {
+        transform: translateX(6px);
+        border-color: var(--cor-secundaria);
+        background: var(--bg-card);
+        box-shadow: var(--sombra-card);
+      }
+
+      .lista i {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: var(--raio-pequeno);
+        background: var(--cor-secundaria-suave);
+        color: var(--cor-secundaria-hover);
+        font-size: 22px;
+        transition:
+          background var(--transicao),
+          color var(--transicao),
+          transform var(--transicao);
+      }
+
+      .lista li:hover i {
+        background: var(--cor-secundaria);
+        color: var(--texto-inverso);
+        transform: rotate(-6deg) scale(1.05);
+      }
+
+      .lista p {
+        color: var(--texto-principal);
+        font-weight: 500;
+      }
+
+      .lista b {
+        color: var(--cor-primaria);
+      }
+
+      /* ---------- CTA ---------- */
+      .cta {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin: 36px 0 50px;
+        padding: 32px 24px;
+        background: var(--grad-cta);
+        border: 1px solid var(--cor-secundaria);
+        border-radius: var(--raio-medio);
+        box-shadow: var(--sombra-suave);
+        animation: subir 0.6s 0.3s ease both;
+      }
+
+      .cta h3 {
+        flex-basis: 100%;
+        color: var(--texto-principal);
+        font-size: 1.35rem;
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 34px;
+        border: 2px solid transparent;
+        border-radius: var(--raio-pilula);
+        background: var(--grad-botao);
+        color: var(--texto-inverso);
+        font-size: 1rem;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        box-shadow: var(--sombra-azul);
+        transition:
+          transform var(--transicao),
+          box-shadow var(--transicao),
+          background var(--transicao),
+          color var(--transicao);
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 24px rgba(30, 64, 175, 0.38);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn-contorno {
+        background: var(--bg-card);
+        color: var(--cor-primaria);
+        border-color: var(--cor-primaria);
+        box-shadow: var(--sombra-suave);
+      }
+
+      .btn-contorno:hover {
+        background: var(--cor-primaria);
+        color: var(--texto-inverso);
+      }
+
+      /* ---------- Formulários (cadastro e login) ---------- */
+      .criar-conta,
+      .login {
+        display: none;
+        width: 100%;
+        max-width: 460px;
+        margin: 36px auto 50px;
+        padding: 34px;
+        background: var(--bg-card);
+        color: var(--texto-principal);
+        border: 1px solid var(--borda-suave);
+        border-radius: 24px;
+        box-shadow: var(--sombra-elevada);
+        text-align: left;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .criar-conta::before,
+      .login::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: var(--grad-destaque);
+      }
+
+      .criar-conta[style*="block"],
+      .login[style*="block"] {
+        animation: subir 0.4s ease both;
+      }
+
+      .criar-conta__cabecalho,
+      .login .auth-cabecalho {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .criar-conta__icone,
+      .login .auth-cabecalho span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 58px;
+        height: 58px;
+        margin-bottom: 12px;
+        border-radius: 18px;
+        background: var(--cor-secundaria-suave);
+        color: var(--cor-primaria);
+        font-size: 26px;
+        box-shadow: inset 0 0 0 2px var(--cor-secundaria);
+      }
+
+      .criar-conta h2,
+      .login h2 {
+        color: var(--cor-primaria);
+        font-size: 1.6rem;
+        line-height: 1.2;
+      }
+
+      .criar-conta__cabecalho p,
+      .login .auth-cabecalho p {
+        margin-top: 6px;
+        color: var(--texto-secundario);
+        font-size: 0.95rem;
+      }
+
+      .campo {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        margin-bottom: 16px;
+      }
+
+      .criar-conta label,
+      .login label {
+        color: var(--texto-principal);
+        font-size: 0.92rem;
+        font-weight: 700;
+      }
+
+      .criar-conta input,
+      .login input {
+        width: 100%;
+        height: 50px;
+        padding: 0 16px;
+        background: var(--bg-input);
+        border: 2px solid transparent;
+        border-radius: var(--raio-pequeno);
+        color: var(--texto-principal);
+        font: inherit;
+        outline: none;
+        transition:
+          border-color var(--transicao),
+          background var(--transicao),
+          box-shadow var(--transicao);
+      }
+
+      .criar-conta input::placeholder,
+      .login input::placeholder {
+        color: var(--texto-placeholder);
+      }
+
+      .criar-conta input:hover,
+      .login input:hover {
+        border-color: var(--borda-suave);
+      }
+
+      .criar-conta input:focus,
+      .login input:focus {
+        background: var(--bg-card);
+        border-color: var(--cor-primaria);
+        box-shadow: var(--anel-foco);
+      }
+
+      .criar-conta__acoes,
+      .login .auth-acoes {
+        display: grid;
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .criar-conta button,
+      .login button {
+        min-height: 50px;
+        border: none;
+        border-radius: var(--raio-pequeno);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          transform var(--transicao),
+          background var(--transicao),
+          box-shadow var(--transicao),
+          border-color var(--transicao);
+      }
+
+      .criar-conta button:hover,
+      .login button:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn-principal {
+        background: var(--grad-botao);
+        color: var(--texto-inverso);
+        box-shadow: var(--sombra-azul);
+      }
+
+      .btn-principal:hover {
+        box-shadow: 0 12px 24px rgba(30, 64, 175, 0.38);
+      }
+
+      .btn-secundario {
+        background: transparent;
+        color: var(--cor-primaria);
+        border: 2px solid var(--borda-suave) !important;
+      }
+
+      .btn-secundario:hover {
+        border-color: var(--cor-primaria) !important;
+        background: var(--cor-primaria-suave);
+      }
+
+      .criar-conta__ou,
+      .login .auth-ou {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--texto-secundario);
+        font-size: 0.85rem;
+      }
+
+      .criar-conta__ou::before,
+      .criar-conta__ou::after,
+      .login .auth-ou::before,
+      .login .auth-ou::after {
+        content: "";
+        height: 1px;
+        flex: 1;
+        background: var(--borda-suave);
+      }
+
+      .mensagem {
+        min-height: 22px;
+        margin-top: 14px;
+        text-align: center;
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+
+      .mensagem.erro,
+      .mensagem.sucesso {
+        padding: 10px 14px;
+        border-radius: var(--raio-pequeno);
+      }
+
+      .mensagem.erro {
+        color: var(--cor-erro-escura);
+        background: var(--cor-erro-suave);
+      }
+
+      .mensagem.sucesso {
+        color: #047857;
+        background: var(--cor-sucesso-suave);
+      }
+
+      /* ---------- PDFs compartilhados ---------- */
+      .feed {
+        margin: 36px 0px 36px;
+        text-align: left;
+      }
+
+      .feed-titulo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        font-size: 1.35rem;
+        color: var(--cor-primaria-hover);
+      }
+
+      .feed-titulo::after {
+        content: "";
+        flex: 1;
+        height: 2px;
+        border-radius: 2px;
+        background: linear-gradient(
+          90deg,
+          var(--cor-primaria-suave),
+          transparent
+        );
+      }
+
+      .feed-lista {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+        gap: 16px;
+      }
+
+      .feed-item {
+        max-height: 250px;
+        height: 100%;
+        position: relative;
+        display: flex;
+        width: 290px;
+        margin: auto;
+        flex-direction: column;
+        gap: 9px;
+        padding: 20px;
+        overflow: hidden;
+        background: var(--bg-card);
+        border: 1px solid var(--borda-suave);
+        border-radius: var(--raio-medio);
+        box-shadow: var(--sombra-card);
+        transition:
+          transform var(--transicao),
+          box-shadow var(--transicao),
+          border-color var(--transicao);
+        animation: subir 0.4s ease both;
+      }
+
+      .feed-item::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 4px;
+        background: var(--grad-destaque);
+      }
+
+      .feed-item:hover {
+        transform: translateY(-5px);
+        border-color: var(--cor-primaria-clara);
+        box-shadow: var(--sombra-elevada);
+      }
+
+      .feed-icone {
+        display: grid;
+        place-items: center;
+        width: 48px;
+        height: 48px;
+        border-radius: var(--raio-pequeno);
+        background: var(--cor-erro-suave);
+        color: var(--cor-erro);
+        font-size: 26px;
+      }
+
+      .feed-item h3 {
+        overflow-wrap: anywhere;
+        font-size: 1rem;
+        line-height: 1.35;
+        color: var(--texto-principal);
+      }
+
+      .feed-autor {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--texto-secundario);
+        font-size: 0.85rem;
+      }
+
+      .feed-item .btn {
+        margin-top: auto;
+        padding: 10px 18px;
+        font-size: 0.9rem;
+      }
+
+      .feed-autor a {
+        color: var(--cor-primaria);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .feed-autor a:hover {
+        text-decoration: underline;
+      }
+
+      .feed-vazio {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: 40px 20px;
+        background: var(--bg-card);
+        border: 2px dashed var(--borda-suave);
+        border-radius: var(--raio-medio);
+        color: var(--texto-secundario);
+        text-align: center;
+      }
+
+      .feed-vazio i {
+        font-size: 2.6rem;
+        color: var(--cor-primaria-clara);
+      }
+
+      /* ---------- Animações ---------- */
+      @keyframes subir {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes aparecer {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+
+      /* ---------- Responsivo ---------- */
+      @media (max-width: 520px) {
+        main {
+          padding: 0 14px;
+        }
+
+        .hero {
+          padding: 52px 16px 84px;
+        }
+
+        .criar-conta,
+        .login {
+          padding: 26px 20px;
+          border-radius: var(--raio-medio);
+        }
+
+        .btn {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li>
+            <button
+              type="button"
+              class="btn-menu"
+              id="btn-menu"
+              aria-label="Abrir menu lateral"
+              aria-controls="menu-lateral"
+              aria-expanded="false"
+            >
+              <i class="bi bi-list"></i>
+            </button>
+          </li>
+        </ul>
+      </nav>
+      <div class="btn-foto">
+        <i class="bi bi-person-circle"></i>
+        <span id="dd"></span>
+      </div>
+    </header>
+
+    <aside class="menu-lateral" id="menu-lateral" aria-hidden="true">
+      <div class="menu-lateral__cabecalho">
+        <strong>ProfeHub</strong>
+        <button
+          type="button"
+          class="btn-fechar-menu"
+          id="btn-fechar-menu"
+          aria-label="Fechar menu lateral"
+        >
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <nav aria-label="Menu principal">
+        <a href="index.html">
+          <i class="bi bi-house-door-fill"></i>
+          <span>Início</span>
+        </a>
+        <a href="paginas/perfil.html" id="link-perfil">
+          <i class="bi bi-person-fill"></i>
+          <span>Meu perfil</span>
+        </a>
+        <button type="button" id="btn-sair" hidden>
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Sair</span>
+        </button>
+      </nav>
+    </aside>
+    <div class="menu-overlay" id="menu-overlay"></div>
+
+    <section class="hero">
+      <h1>PROFE<span>HUB</span></h1>
+      <p>A rede social feita para professores</p>
+    </section>
+
+    <main>
+      <section class="card" id="card">
+        <h3>UM LUGAR FEITO PARA VOCÊ!</h3>
+        <span>Aqui você pode tudo!</span>
+        <ul class="lista">
+          <li>
+            <i class="bi bi-file-earmark-pdf-fill"></i>
+            <p>Compartilhar PDF.</p>
+          </li>
+          <li>
+            <i class="bi bi-star-fill"></i>
+            <p>Ficar conhecido.</p>
+          </li>
+          <li>
+            <i class="bi bi-people-fill"></i>
+            <p>E ajudar outros <b>Professores</b>, da sua área.</p>
+          </li>
+        </ul>
+      </section>
+      <section class="cta" id="cta">
+        <h3>Crie sua conta ou faça login!</h3>
+        <a href="#" id="btn-criar" class="btn">Criar conta</a>
+        <a href="#" id="btn-login" class="btn btn-contorno">Fazer login</a>
+      </section>
+      <section class="criar-conta" id="cadastro">
+        <div class="criar-conta__cabecalho">
+          <span class="criar-conta__icone" aria-hidden="true">
+            <i class="bi bi-person-plus-fill"></i>
+          </span>
+          <h2>Crie sua conta</h2>
+          <p>Comece a compartilhar conhecimento</p>
+        </div>
+
+        <form id="form-criar-conta" novalidate>
+          <div class="campo">
+            <label for="nome">Nome</label>
+            <input
+              type="text"
+              id="nome"
+              placeholder="Seu nome"
+              autocomplete="name"
+              required
+            />
+          </div>
+
+          <div class="campo">
+            <label for="senha">Senha</label>
+            <input
+              type="password"
+              id="senha"
+              placeholder="Mínimo de 6 caracteres"
+              autocomplete="new-password"
+              minlength="6"
+              required
+            />
+          </div>
+
+          <div class="campo">
+            <label for="confirmar-senha">Confirmar senha</label>
+            <input
+              type="password"
+              id="confirmar-senha"
+              placeholder="Repita a senha"
+              autocomplete="new-password"
+              minlength="6"
+              required
+            />
+          </div>
+
+          <div class="criar-conta__acoes">
+            <button type="submit" class="btn-principal">Criar conta</button>
+            <span class="criar-conta__ou">ou</span>
+            <button type="button" class="btn-secundario" id="btn-ir-login">
+              Já tenho uma conta
+            </button>
+          </div>
+          <p
+            class="mensagem"
+            id="mensagem"
+            role="status"
+            aria-live="polite"
+          ></p>
+        </form>
+      </section>
+      <section class="login" id="login">
+        <div class="auth-cabecalho">
+          <span aria-hidden="true">
+            <i class="bi bi-box-arrow-right"></i>
+          </span>
+          <h2>Bem-vindo de volta</h2>
+          <p>Entre para continuar no ProfeHub</p>
+        </div>
+
+        <form id="form-login" novalidate>
+          <div class="campo">
+            <label for="login-nome">Nome</label>
+            <input
+              type="text"
+              id="login-nome"
+              placeholder="Digite seu nome"
+              autocomplete="username"
+              required
+            />
+          </div>
+
+          <div class="campo">
+            <label for="login-senha">Senha</label>
+            <input
+              type="password"
+              id="login-senha"
+              placeholder="Digite sua senha"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+
+          <div class="auth-acoes">
+            <button type="submit" class="btn-principal">Entrar</button>
+            <span class="auth-ou">ou</span>
+            <button type="button" class="btn-secundario" id="btn-ir-cadastro">
+              Criar uma conta
+            </button>
+          </div>
+          <p
+            class="mensagem"
+            id="mensagem-login"
+            role="status"
+            aria-live="polite"
+          ></p>
+        </form>
+      </section>
+    </main>
+
+    <section class="feed" id="feed" aria-labelledby="feed-titulo">
+      <h2 class="feed-titulo" id="feed-titulo">
+        <i class="bi bi-share-fill"></i> PDFs compartilhados
+      </h2>
+      <div class="feed-lista" id="feed-lista"></div>
+    </section>
+    <script src="config.js"></script>
+    <script>
+      // URL da API vem do .env (via config.js gerado por gerar_config.py)
+      const API_URL = (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) || "";
+      const API_BASE =
+        API_URL && new URL(API_URL).origin === window.location.origin
+          ? ""
+          : API_URL;
+      const SESSAO_KEY = "usuarioLogado";
+
+      const card = document.getElementById("card");
+      const cta = document.getElementById("cta");
+
+      const logins = document.getElementById("login");
+      const secaoCadastro = document.getElementById("cadastro");
+
+      const formCadastro = document.getElementById("form-criar-conta");
+      const formLogin = document.getElementById("form-login");
+
+      const mensagem = document.getElementById("mensagem");
+      const mensagemLogin = document.getElementById("mensagem-login");
+
+      const btnMenu = document.getElementById("btn-menu");
+      const btnFecharMenu = document.getElementById("btn-fechar-menu");
+      const menuLateral = document.getElementById("menu-lateral");
+      const menuOverlay = document.getElementById("menu-overlay");
+      const btnSair = document.getElementById("btn-sair");
+
+      // ---------- Utilidades ----------
+      function lerSessao() {
+        try {
+          const s = JSON.parse(localStorage.getItem(SESSAO_KEY) || "null");
+          return s && s.nome && s.token ? s : null;
+        } catch {
+          return null;
+        }
+      }
+
+      async function postar(caminho, corpo) {
+        const r = await fetch(`${API_BASE}${caminho}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(corpo),
+        });
+        const dados = await r.json().catch(() => ({}));
+        if (!r.ok) {
+          throw new Error(
+            typeof dados.detail === "string"
+              ? dados.detail
+              : "Confira os campos e tente novamente.",
+          );
+        }
+        return dados;
+      }
+
+      function textoErro(e) {
+        return e instanceof TypeError
+          ? "Não foi possível conectar ao servidor."
+          : e.message;
+      }
+
+      function avisarCadastroParaPDF() {
+        secaoCadastro.style.display = "block";
+        logins.style.display = "none";
+        card.style.display = "none";
+        cta.style.display = "none";
+        mensagem.className = "mensagem erro";
+        mensagem.textContent =
+          "Para abrir este PDF, faça seu cadastro ou entre na sua conta.";
+        secaoCadastro.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+
+      // ---------- Menu lateral ----------
+      function abrirMenu() {
+        menuLateral.classList.add("aberto");
+        menuOverlay.classList.add("aberto");
+        menuLateral.setAttribute("aria-hidden", "false");
+        btnMenu.setAttribute("aria-expanded", "true");
+        btnMenu.setAttribute("aria-label", "Fechar menu lateral");
+        document.body.style.overflow = "hidden";
+      }
+
+      function fecharMenu() {
+        menuLateral.classList.remove("aberto");
+        menuOverlay.classList.remove("aberto");
+        menuLateral.setAttribute("aria-hidden", "true");
+        btnMenu.setAttribute("aria-expanded", "false");
+        btnMenu.setAttribute("aria-label", "Abrir menu lateral");
+        document.body.style.overflow = "";
+      }
+
+      btnMenu.addEventListener("click", () => {
+        menuLateral.classList.contains("aberto") ? fecharMenu() : abrirMenu();
+      });
+      btnFecharMenu.addEventListener("click", fecharMenu);
+      menuOverlay.addEventListener("click", fecharMenu);
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") fecharMenu();
+      });
+
+      // ---------- Alternar entre telas ----------
+      function mostrarLogado(nome) {
+        cta.style.display = "none";
+        card.style.display = "none";
+        secaoCadastro.style.display = "none";
+        logins.style.display = "none";
+        document.querySelector(".hero p").textContent =
+          "Bem-vindo de volta, " + nome;
+        document.getElementById("dd").textContent = nome;
+        btnSair.hidden = false;
+      }
+
+      // ABRIR CADASTRO
+      document
+        .getElementById("btn-criar")
+        .addEventListener("click", (event) => {
+          event.preventDefault();
+
+          secaoCadastro.style.display = "block";
+          logins.style.display = "none";
+          card.style.display = "none";
+          cta.style.display = "none";
+        });
+
+      // ABRIR LOGIN
+      document
+        .getElementById("btn-login")
+        .addEventListener("click", (event) => {
+          event.preventDefault();
+
+          secaoCadastro.style.display = "none";
+          logins.style.display = "block";
+          card.style.display = "none";
+          cta.style.display = "none";
+        });
+
+      // IR PARA LOGIN
+      document.getElementById("btn-ir-login").addEventListener("click", () => {
+        logins.style.display = "block";
+        secaoCadastro.style.display = "none";
+      });
+
+      // IR PARA CADASTRO
+      document
+        .getElementById("btn-ir-cadastro")
+        .addEventListener("click", () => {
+          logins.style.display = "none";
+          secaoCadastro.style.display = "block";
+        });
+
+      // ---------- CADASTRAR USUÁRIO (no servidor) ----------
+      formCadastro.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const nome = document.getElementById("nome").value.trim();
+        const senha = document.getElementById("senha").value;
+        const confirmacao = document.getElementById("confirmar-senha").value;
+
+        mensagem.className = "mensagem";
+
+        if (!nome || !senha || !confirmacao) {
+          mensagem.textContent = "Preencha todos os campos.";
+          mensagem.classList.add("erro");
+          return;
+        }
+
+        if (senha.length < 6) {
+          mensagem.textContent = "A senha deve ter pelo menos 6 caracteres.";
+          mensagem.classList.add("erro");
+          return;
+        }
+
+        if (senha !== confirmacao) {
+          mensagem.textContent = "As senhas não coincidem.";
+          mensagem.classList.add("erro");
+          return;
+        }
+
+        try {
+          const criado = await postar("/cadastro", { nome, senha });
+          mensagem.textContent =
+            "Conta criada com sucesso! Bem-Vindo " + criado.nome;
+          mensagem.classList.add("sucesso");
+          formCadastro.reset();
+        } catch (e) {
+          mensagem.textContent = textoErro(e);
+          mensagem.classList.add("erro");
+        }
+      });
+
+      // ---------- LOGIN (no servidor) ----------
+      formLogin.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const nome = document.getElementById("login-nome").value.trim();
+        const senha = document.getElementById("login-senha").value;
+
+        mensagemLogin.className = "mensagem";
+
+        if (!nome || !senha) {
+          mensagemLogin.textContent = "Preencha nome e senha.";
+          mensagemLogin.classList.add("erro");
+          return;
+        }
+
+        try {
+          const dados = await postar("/login", { nome, senha });
+          localStorage.setItem(
+            SESSAO_KEY,
+            JSON.stringify({ nome: dados.nome, token: dados.token }),
+          );
+          formLogin.reset();
+          mostrarLogado(dados.nome);
+        } catch (e) {
+          mensagemLogin.textContent = textoErro(e);
+          mensagemLogin.classList.add("erro");
+        }
+      });
+
+      // ---------- PDFS COMPARTILHADOS (vindos do main.py) ----------
+      const feedLista = document.getElementById("feed-lista");
+
+      function mostrarVazioFeed(titulo, texto) {
+        const aviso = document.createElement("div");
+        aviso.className = "feed-vazio";
+        const icone = document.createElement("i");
+        icone.className = "bi bi-file-earmark-pdf";
+        const strong = document.createElement("strong");
+        strong.textContent = titulo;
+        const span = document.createElement("span");
+        span.textContent = texto;
+        aviso.append(icone, strong, span);
+        feedLista.replaceChildren(aviso);
+      }
+
+      async function carregarCompartilhados() {
+        try {
+          const r = await fetch(`${API_BASE}/compartilhados`);
+          if (!r.ok) throw new Error();
+          const itens = await r.json();
+
+          if (!itens.length) {
+            mostrarVazioFeed(
+              "Nenhum PDF compartilhado ainda",
+              "Compartilhe um PDF no seu perfil para ele aparecer aqui.",
+            );
+            return;
+          }
+
+          feedLista.replaceChildren();
+          itens.forEach(({ id, nome, autor, perfil_id }) => {
+            const item = document.createElement("article");
+            item.className = "feed-item";
+
+            const icone = document.createElement("div");
+            icone.className = "feed-icone";
+            icone.innerHTML = '<i class="bi bi-file-earmark-pdf-fill"></i>';
+
+            const titulo = document.createElement("h3");
+            titulo.textContent = nome;
+
+            const quem = document.createElement("p");
+            quem.className = "feed-autor";
+            const iconeAutor = document.createElement("i");
+            iconeAutor.className = "bi bi-person-circle";
+            const linkAutor = document.createElement("a");
+            linkAutor.href = perfil_id
+              ? `perfil/${encodeURIComponent(perfil_id)}`
+              : `paginas/perfil.html?usuario=${encodeURIComponent(autor)}`;
+            linkAutor.textContent = autor;
+            quem.append(iconeAutor, "Por ", linkAutor);
+
+            const abrir = document.createElement("a");
+            abrir.className = "btn";
+            abrir.href = `${API_BASE}/publico/${id}`;
+            abrir.target = "_blank";
+            abrir.rel = "noopener";
+            abrir.innerHTML =
+              '<i class="bi bi-box-arrow-up-right"></i>&nbsp;Abrir';
+            abrir.addEventListener("click", (event) => {
+              if (!lerSessao()) {
+                event.preventDefault();
+                avisarCadastroParaPDF();
+              }
+            });
+
+            item.append(icone, titulo, quem, abrir);
+            feedLista.appendChild(item);
+          });
+        } catch {
+          mostrarVazioFeed(
+            "Não foi possível carregar os PDFs",
+            "Verifique se o servidor (main.py) está rodando.",
+          );
+        }
+      }
+
+      carregarCompartilhados();
+
+      // ---------- Sessão ----------
+      const sessao = lerSessao();
+
+      if (!sessao) {
+        // remove sessões antigas (sem token) de versões anteriores
+        localStorage.removeItem(SESSAO_KEY);
+      } else {
+        mostrarLogado(sessao.nome);
+
+        // confere com o servidor se a sessão ainda vale
+        fetch(`${API_BASE}/eu`, {
+          headers: { Authorization: `Bearer ${sessao.token}` },
+        })
+          .then((r) => {
+            if (r.status === 401) {
+              localStorage.removeItem(SESSAO_KEY);
+              window.location.reload();
+            }
+          })
+          .catch(() => {});
+      }
+
+      btnSair.addEventListener("click", async () => {
+        const atual = lerSessao();
+        if (atual) {
+          try {
+            await fetch(`${API_BASE}/logout`, {
+              method: "POST",
+              headers: { Authorization: `Bearer ${atual.token}` },
+            });
+          } catch {}
+        }
+        localStorage.removeItem(SESSAO_KEY);
+        document.getElementById("dd").textContent = "";
+        btnSair.hidden = true;
+        fecharMenu();
+        window.location.reload();
+      });
+    </script>
+  </body>
+</html>

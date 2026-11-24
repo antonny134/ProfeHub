@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.2/font/bootstrap-icons.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProfeHub | Perfil</title>
+    <style>
+      :root {
+        /* Cores Principais da Marca */
+        --cor-primaria: #1e40af;
+        --cor-primaria-hover: #1e3a8a;
+        --cor-primaria-clara: #3b82f6;
+        --cor-primaria-suave: #dbeafe;
+        --cor-secundaria: #f59e0b;
+        --cor-secundaria-suave: #fef3c7;
+
+        /* Gradientes */
+        --grad-header: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3b82f6 100%);
+        --grad-botao: linear-gradient(135deg, #2563eb, #1e40af);
+        --grad-perigo: linear-gradient(135deg, #f87171, #dc2626);
+        --grad-pagina: radial-gradient(circle at top right, #dbeafe 0%, transparent 45%),
+          radial-gradient(circle at bottom left, #fef3c7 0%, transparent 40%);
+
+        /* Fundos (Superfícies) */
+        --bg-pagina: #f8fafc;
+        --bg-card: #ffffff;
+        --bg-input: #f1f5f9;
+        --bg-vidro: rgba(255, 255, 255, 0.15);
+
+        /* Textos */
+        --texto-principal: #0f172a;
+        --texto-secundario: #475569;
+        --texto-inverso: #ffffff;
+
+        /* Bordas e Divisores */
+        --borda-suave: #e2e8f0;
+
+        /* Feedback e Status */
+        --cor-sucesso: #10b981;
+        --cor-erro: #ef4444;
+        --cor-erro-suave: #fee2e2;
+        --cor-sucesso-suave: #d1fae5;
+
+        /* Formas e Sombras */
+        --raio-pequeno: 10px;
+        --raio-medio: 16px;
+        --raio-grande: 32px;
+        --sombra-suave: 0 4px 12px rgba(15, 23, 42, 0.06);
+        --sombra-card: 0 8px 24px rgba(15, 23, 42, 0.08);
+        --sombra-elevada: 0 16px 36px rgba(30, 64, 175, 0.2);
+        --sombra-header: 0 10px 30px rgba(30, 64, 175, 0.35);
+
+        /* Movimento */
+        --transicao: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          Roboto,
+          sans-serif;
+        background: var(--grad-pagina), var(--bg-pagina);
+        background-attachment: fixed;
+        color: var(--texto-principal);
+        line-height: 1.6;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      /* ---------- Cabeçalho ---------- */
+      header section {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 25px 32px;
+        align-items: center;
+        background: var(--grad-header);
+        color: var(--texto-inverso);
+        border-radius: 0 0 var(--raio-grande) var(--raio-grande);
+        box-shadow: var(--sombra-header);
+      }
+
+      .nome {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: 0.04em;
+      }
+
+      .nome i {
+        display: grid;
+        place-items: center;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: var(--bg-vidro);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        font-size: 26px;
+      }
+
+      .menu {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+      }
+
+      /* Campo de arquivo */
+      .menu input[type="file"] {
+        max-width: 240px;
+        padding: 6px;
+        border: 1px dashed rgba(255, 255, 255, 0.55);
+        border-radius: var(--raio-pequeno);
+        background: var(--bg-vidro);
+        color: var(--texto-inverso);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background var(--transicao), border-color var(--transicao);
+      }
+
+      .menu input[type="file"]:hover {
+        background: rgba(255, 255, 255, 0.25);
+        border-color: #fff;
+      }
+
+      .menu input[type="file"]::file-selector-button {
+        margin-right: 10px;
+        padding: 6px 12px;
+        border: 0;
+        border-radius: 8px;
+        background: var(--cor-secundaria);
+        color: #422006;
+        font-weight: 700;
+        cursor: pointer;
+        transition: filter var(--transicao);
+      }
+
+      .menu input[type="file"]::file-selector-button:hover {
+        filter: brightness(1.08);
+      }
+
+      /* Botões */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-height: 38px;
+        padding: 8px 16px;
+        border: 0;
+        border-radius: var(--raio-pequeno);
+        font: inherit;
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: var(--texto-inverso);
+        cursor: pointer;
+        transition:
+          transform var(--transicao),
+          box-shadow var(--transicao),
+          filter var(--transicao);
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--sombra-suave);
+        filter: brightness(1.06);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn:focus-visible,
+      .menu input[type="file"]:focus-visible {
+        outline: 3px solid var(--cor-secundaria);
+        outline-offset: 2px;
+      }
+
+      .btn-primario {
+        background: var(--grad-botao);
+      }
+
+      .btn-perigo {
+        background: var(--grad-perigo);
+      }
+
+      .btn-vidro {
+        background: var(--bg-vidro);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+      }
+
+      .btn-compartilhar {
+        background: linear-gradient(135deg, #0f766e, #14b8a6);
+      }
+
+      .btn-compartilhar.btn-compartilhado {
+        background: linear-gradient(135deg, #059669, #10b981);
+      }
+
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: wait;
+        transform: none;
+      }
+
+      /* ---------- Conteúdo ---------- */
+      main {
+        width: min(100% - 32px, 1000px);
+        margin: 32px auto;
+      }
+
+      .titulo-secao {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+        font-size: 1.35rem;
+        color: var(--cor-primaria-hover);
+      }
+
+      .titulo-secao::after {
+        content: "";
+        flex: 1;
+        height: 2px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, var(--cor-primaria-suave), transparent);
+      }
+
+      .subtitulo {
+        margin-bottom: 18px;
+        color: var(--texto-secundario);
+        font-size: 0.95rem;
+      }
+
+      .busca-pdfs {
+        position: relative;
+        margin: 0 0 20px;
+      }
+
+      .busca-pdfs i {
+        position: absolute;
+        top: 50%;
+        left: 16px;
+        color: var(--texto-secundario);
+        transform: translateY(-50%);
+      }
+
+      .busca-pdfs input {
+        width: 100%;
+        min-height: 48px;
+        padding: 10px 16px 10px 44px;
+        border: 1px solid var(--borda-suave);
+        border-radius: var(--raio-pequeno);
+        background: var(--bg-card);
+        color: var(--texto-principal);
+        font: inherit;
+        box-shadow: var(--sombra-suave);
+      }
+
+      .busca-pdfs input:focus {
+        border-color: var(--cor-primaria-clara);
+        outline: 3px solid var(--cor-primaria-suave);
+      }
+
+      #pdfs {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 20px;
+      }
+
+      .pdf {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 20px;
+        overflow: hidden;
+        border: 1px solid var(--borda-suave);
+        border-radius: var(--raio-medio);
+        background: var(--bg-card);
+        box-shadow: var(--sombra-card);
+        transition:
+          transform var(--transicao),
+          box-shadow var(--transicao),
+          border-color var(--transicao);
+        animation: entrar 0.35s ease both;
+      }
+
+      .pdf[hidden] {
+        display: none;
+      }
+
+      .pdf::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--cor-primaria-clara), var(--cor-secundaria));
+      }
+
+      .pdf:hover {
+        transform: translateY(-6px);
+        border-color: var(--cor-primaria-clara);
+        box-shadow: var(--sombra-elevada);
+      }
+
+      .pdf-icone {
+        display: grid;
+        place-items: center;
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        background: var(--cor-erro-suave);
+        color: var(--cor-erro);
+        font-size: 28px;
+      }
+
+      .pdf h2 {
+        overflow-wrap: anywhere;
+        font-size: 1rem;
+        line-height: 1.35;
+        color: var(--texto-principal);
+      }
+
+      .pdf-acoes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: auto;
+      }
+
+      .pdf-acoes .btn {
+        flex: 1;
+        min-height: 36px;
+        padding: 8px 12px;
+      }
+
+      /* Mensagens e estado vazio */
+      .mensagem {
+        margin: 12px 0;
+        color: var(--cor-erro);
+        font-weight: 600;
+      }
+
+      .mensagem:not(:empty) {
+        padding: 12px 16px;
+        border-left: 4px solid var(--cor-erro);
+        border-radius: var(--raio-pequeno);
+        background: var(--cor-erro-suave);
+      }
+
+      .mensagem.sucesso:not(:empty) {
+        color: #047857;
+        border-left-color: var(--cor-sucesso);
+        background: var(--cor-sucesso-suave);
+      }
+
+      .vazio {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 48px 20px;
+        border: 2px dashed var(--borda-suave);
+        border-radius: var(--raio-medio);
+        background: var(--bg-card);
+        color: var(--texto-secundario);
+        text-align: center;
+      }
+
+      .vazio i {
+        font-size: 3rem;
+        color: var(--cor-primaria-clara);
+      }
+
+      @keyframes entrar {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+
+      @media (max-width: 600px) {
+        header section {
+          gap: 12px;
+          padding: 18px;
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .menu {
+          width: 100%;
+          padding: 0;
+          flex-wrap: wrap;
+        }
+
+        .menu input[type="file"] {
+          max-width: 100%;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <section>
+        <div class="nome">
+          <i class="bi bi-person-circle"></i>
+          <span id="nome_user"></span>
+        </div>
+
+        <div class="menu">
+          <input type="file" accept=".pdf,application/pdf" id="inputPDF" hidden />
+          <button id="btn-compartilhar-perfil" class="btn btn-primario" type="button" hidden>
+            <i class="bi bi-share-fill"></i>
+          </button>
+          <button id="btn-sair" class="btn btn-perigo" type="button">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Sair</span>
+          </button>
+          <button
+            id="btn-voltar"
+            class="btn btn-vidro"
+            type="button"
+            aria-label="Voltar para o início"
+          >
+            <i class="bi bi-arrow-left"></i>
+            <span>Voltar</span>
+          </button>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <h1 class="titulo-secao">
+        <i class="bi bi-folder2-open"></i>
+        <span id="titulo-pagina">Meus PDFs</span>
+      </h1>
+      <p class="subtitulo" id="subtitulo"></p>
+      <label class="busca-pdfs" id="busca-pdfs" hidden>
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <input
+          type="search"
+          id="pesquisa-pdf"
+          placeholder="Pesquisar nos meus PDFs..."
+          aria-label="Pesquisar nos meus PDFs"
+          autocomplete="off"
+        />
+      </label>
+      <p class="mensagem" id="mensagem" role="status" aria-live="polite"></p>
+      <section id="pdfs"></section>
+    </main>
+    <script src="../config.js"></script>
+    <script>
+      // URL da API vem do .env (via config.js gerado por gerar_config.py)
+      const API_URL = (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) || "";
+      const API_BASE =
+        API_URL && new URL(API_URL).origin === window.location.origin
+          ? ""
+          : API_URL;
+      const SESSAO_KEY = "usuarioLogado";
+
+      const inputPDF = document.getElementById("inputPDF");
+      const listaPDFs = document.getElementById("pdfs");
+      const mensagem = document.getElementById("mensagem");
+      const tituloPagina = document.getElementById("titulo-pagina");
+      const subtitulo = document.getElementById("subtitulo");
+      const btnSair = document.getElementById("btn-sair");
+      const btnCompartilharPerfil = document.getElementById(
+        "btn-compartilhar-perfil",
+      );
+      const buscaPDFs = document.getElementById("busca-pdfs");
+      const pesquisaPDF = document.getElementById("pesquisa-pdf");
+
+      function mostrarMensagem(texto, tipo = "erro") {
+        mensagem.className = `mensagem ${tipo}`;
+        mensagem.textContent = texto;
+      }
+
+      function voltar() {
+        window.location.assign("/");
+      }
+
+      function lerSessao() {
+        try {
+          const s = JSON.parse(localStorage.getItem(SESSAO_KEY) || "null");
+          return s && typeof s.nome === "string" && s.token ? s : null;
+        } catch {
+          return null;
+        }
+      }
+
+      function limparSessao() {
+        localStorage.removeItem(SESSAO_KEY);
+      }
+
+      async function sair() {
+        const atual = lerSessao();
+        if (atual) {
+          try {
+            await fetch(`${API_BASE}/logout`, {
+              method: "POST",
+              headers: { Authorization: `Bearer ${atual.token}` },
+            });
+          } catch {}
+        }
+        limparSessao();
+        voltar();
+      }
+
+      document.getElementById("btn-voltar").addEventListener("click", voltar);
+
+      // ---------- Quem estou vendo? ----------
+      // sem ?usuario= ou /perfil/<id> -> meu próprio perfil
+      // com ?usuario=X ou /perfil/<id> -> perfil público
+      const sessao = lerSessao();
+      const alvo = new URLSearchParams(window.location.search).get("usuario");
+      const perfilNaUrl = window.location.pathname.match(
+        /^\/perfil\/([a-f0-9]{32})\/?$/,
+      )?.[1];
+      const meuPerfil =
+        (!alvo && !perfilNaUrl) ||
+        (!!sessao &&
+          !!alvo &&
+          alvo.trim().toLowerCase() === sessao.nome.toLowerCase());
+
+      if (meuPerfil && !sessao) {
+        voltar(); // perfil próprio exige login
+      }
+
+      if (sessao) {
+        btnSair.addEventListener("click", sair);
+      } else {
+        btnSair.hidden = true; // visitante sem conta
+      }
+
+      function authHeaders() {
+        return { Authorization: `Bearer ${sessao.token}` };
+      }
+
+      function sessaoExpirada() {
+        limparSessao();
+        voltar();
+      }
+
+      // ---------- Abrir PDF ----------
+      async function abrirPDF(id) {
+        // abre a aba já (antes do fetch) para o navegador não bloquear
+        const aba = window.open("", "_blank");
+        try {
+          const url = meuPerfil
+            ? `${API_BASE}/pdfs/${id}`
+            : `${API_BASE}/publico/${id}`;
+          const r = await fetch(url, meuPerfil ? { headers: authHeaders() } : {});
+          if (r.status === 401 && meuPerfil) return sessaoExpirada();
+          if (!r.ok) throw new Error();
+          const blob = await r.blob();
+          const objeto = URL.createObjectURL(
+            new Blob([blob], { type: "application/pdf" }),
+          );
+          if (aba) aba.location.href = objeto;
+          else window.location.assign(objeto);
+          setTimeout(() => URL.revokeObjectURL(objeto), 60_000);
+        } catch {
+          if (aba) aba.close();
+          mostrarMensagem("Não foi possível abrir o PDF.");
+        }
+      }
+
+      // ---------- Lista ----------
+      function atualizarVazio() {
+        const cartoes = [...listaPDFs.querySelectorAll(".pdf")];
+        const temCartao = cartoes.some((cartao) => !cartao.hidden);
+        let vazio = listaPDFs.querySelector(".vazio");
+        if (!temCartao) {
+          if (!vazio) {
+            vazio = document.createElement("div");
+            vazio.className = "vazio";
+            vazio.innerHTML =
+              '<i class="bi bi-file-earmark-pdf"></i><strong></strong><span></span>';
+            listaPDFs.appendChild(vazio);
+          }
+          const buscando = cartoes.length > 0 && pesquisaPDF.value.trim();
+          vazio.querySelector("strong").textContent = buscando
+            ? "Nenhum PDF encontrado"
+            : meuPerfil
+              ? "Nenhum PDF enviado ainda"
+              : "Nada compartilhado por aqui";
+          vazio.querySelector("span").textContent = buscando
+            ? "Tente pesquisar por outro nome."
+            : meuPerfil
+              ? "Use o campo acima para enviar seu primeiro arquivo."
+              : "Esta pessoa ainda não compartilhou nenhum PDF.";
+        } else if (vazio) {
+          vazio.remove();
+        }
+      }
+
+      function filtrarPDFs() {
+        const termo = pesquisaPDF.value.trim().toLocaleLowerCase("pt-BR");
+        listaPDFs.querySelectorAll(".pdf").forEach((cartao) => {
+          cartao.hidden = !cartao.dataset.nome
+            .toLocaleLowerCase("pt-BR")
+            .includes(termo);
+        });
+        atualizarVazio();
+      }
+
+      function criarCartao({ id, nome, compartilhado = false }) {
+        const cartao = document.createElement("article");
+        cartao.className = "pdf";
+        cartao.dataset.nome = nome;
+
+        const icone = document.createElement("div");
+        icone.className = "pdf-icone";
+        icone.innerHTML = '<i class="bi bi-file-earmark-pdf-fill"></i>';
+
+        const titulo = document.createElement("h2");
+        titulo.textContent = nome;
+
+        const acoes = document.createElement("div");
+        acoes.className = "pdf-acoes";
+
+        const botaoAbrir = document.createElement("button");
+        botaoAbrir.type = "button";
+        botaoAbrir.className = "btn btn-primario";
+        botaoAbrir.innerHTML = '<i class="bi bi-box-arrow-up-right"></i> Abrir';
+        botaoAbrir.addEventListener("click", () => abrirPDF(id));
+        acoes.append(botaoAbrir);
+
+        // compartilhar / apagar: só no próprio perfil
+        if (meuPerfil) {
+          const botaoCompartilhar = document.createElement("button");
+          botaoCompartilhar.type = "button";
+          botaoCompartilhar.className = "btn btn-compartilhar";
+
+          const atualizarBotao = () => {
+            botaoCompartilhar.classList.toggle("btn-compartilhado", compartilhado);
+            botaoCompartilhar.innerHTML = compartilhado
+              ? '<i class="bi bi-check2-circle"></i> Compartilhado'
+              : '<i class="bi bi-share-fill"></i> Compartilhar';
+          };
+          atualizarBotao();
+
+          botaoCompartilhar.addEventListener("click", async () => {
+            botaoCompartilhar.disabled = true;
+            try {
+              const r = await fetch(`${API_BASE}/pdfs/${id}/compartilhar`, {
+                method: compartilhado ? "DELETE" : "POST",
+                headers: authHeaders(),
+              });
+              if (r.status === 401) return sessaoExpirada();
+              if (!r.ok) throw new Error();
+              compartilhado = !compartilhado;
+              atualizarBotao();
+              mostrarMensagem(
+                compartilhado
+                  ? "PDF compartilhado! Ele já aparece na página inicial e no seu perfil público."
+                  : "Compartilhamento removido. Agora só você vê este PDF.",
+                "sucesso",
+              );
+            } catch {
+              mostrarMensagem("Não foi possível alterar o compartilhamento.");
+            }
+            botaoCompartilhar.disabled = false;
+          });
+
+          const botaoApagar = document.createElement("button");
+          botaoApagar.type = "button";
+          botaoApagar.className = "btn btn-perigo";
+          botaoApagar.innerHTML = '<i class="bi bi-trash3"></i> Apagar';
+          botaoApagar.addEventListener("click", async () => {
+            if (!confirm(`Apagar "${nome}"?`)) return;
+            try {
+              const r = await fetch(`${API_BASE}/pdfs/${id}`, {
+                method: "DELETE",
+                headers: authHeaders(),
+              });
+              if (r.status === 401) return sessaoExpirada();
+              if (!r.ok) throw new Error();
+              cartao.remove();
+              atualizarVazio();
+            } catch {
+              mostrarMensagem("Não foi possível apagar.");
+            }
+          });
+
+          acoes.append(botaoCompartilhar, botaoApagar);
+        }
+
+        cartao.append(icone, titulo, acoes);
+        listaPDFs.appendChild(cartao);
+        filtrarPDFs();
+      }
+
+      async function carregarPDFs() {
+        try {
+          let r;
+          if (meuPerfil) {
+            r = await fetch(`${API_BASE}/pdfs`, { headers: authHeaders() });
+            if (r.status === 401) return sessaoExpirada();
+            if (!r.ok) throw new Error();
+            (await r.json()).forEach(criarCartao);
+          } else if (perfilNaUrl) {
+            r = await fetch(
+              `${API_BASE}/perfil/${encodeURIComponent(perfilNaUrl)}/compartilhados`,
+            );
+            if (r.status === 404) {
+              tituloPagina.textContent = "Perfil não encontrado";
+              subtitulo.textContent = "";
+              mostrarMensagem("Esse perfil não existe.");
+              return;
+            }
+            if (!r.ok) throw new Error();
+            const dados = await r.json();
+            document.getElementById("nome_user").textContent = dados.usuario;
+            tituloPagina.textContent = `Compartilhados por ${dados.usuario}`;
+            document.title = `ProfeHub | ${dados.usuario}`;
+            dados.pdfs.forEach(criarCartao);
+          } else {
+            r = await fetch(
+              `${API_BASE}/usuarios/${encodeURIComponent(alvo)}/compartilhados`,
+            );
+            if (r.status === 404) {
+              tituloPagina.textContent = "Perfil não encontrado";
+              subtitulo.textContent = "";
+              mostrarMensagem("Esse usuário não existe.");
+              return;
+            }
+            if (!r.ok) throw new Error();
+            const dados = await r.json();
+            document.getElementById("nome_user").textContent = dados.usuario;
+            tituloPagina.textContent = `Compartilhados por ${dados.usuario}`;
+            document.title = `ProfeHub | ${dados.usuario}`;
+            dados.pdfs.forEach(criarCartao);
+          }
+        } catch {
+          mostrarMensagem("Erro ao carregar os PDFs. O servidor está rodando?");
+        }
+        atualizarVazio();
+      }
+
+      // ---------- Cabeçalho conforme o modo ----------
+      if (meuPerfil && sessao) {
+        document.getElementById("nome_user").textContent = sessao.nome;
+        subtitulo.textContent =
+          "Só você vê os PDFs privados. Os compartilhados aparecem para todo mundo.";
+        inputPDF.hidden = false;
+        buscaPDFs.hidden = false;
+        btnCompartilharPerfil.hidden = false;
+        fetch(`${API_BASE}/eu`, { headers: authHeaders() })
+          .then((r) => (r.ok ? r.json() : null))
+          .then((dados) => {
+            if (!dados) return;
+            btnCompartilharPerfil.addEventListener("click", async () => {
+              const url = `${window.location.origin}/perfil/${dados.perfil_id}`;
+              if (navigator.share) {
+                try {
+                  await navigator.share({
+                    title: `Perfil de ${dados.nome} no ProfeHub`,
+                    url,
+                  });
+                  return;
+                } catch (erro) {
+                  if (erro?.name === "AbortError") return;
+                }
+              }
+              try {
+                await navigator.clipboard.writeText(url);
+                mostrarMensagem("Link do seu perfil copiado!", "sucesso");
+              } catch {
+                window.prompt("Copie o link do seu perfil:", url);
+              }
+            });
+          });
+      } else {
+        tituloPagina.textContent = "Perfil";
+        subtitulo.textContent =
+          "Você está vendo apenas o que esta pessoa compartilhou.";
+        document.getElementById("nome_user").textContent = alvo || "";
+      }
+
+      pesquisaPDF.addEventListener("input", filtrarPDFs);
+
+      // ---------- Envio ----------
+      inputPDF.addEventListener("change", async () => {
+        const arquivo = inputPDF.files?.[0];
+        mostrarMensagem("");
+        if (!arquivo) return;
+
+        if (
+          !arquivo.name.toLowerCase().endsWith(".pdf") ||
+          (arquivo.type && arquivo.type !== "application/pdf")
+        ) {
+          mostrarMensagem("Selecione um arquivo PDF válido.");
+          inputPDF.value = "";
+          return;
+        }
+
+        const dados = new FormData();
+        dados.append("arquivo", arquivo); // mesmo nome do parâmetro no FastAPI
+
+        try {
+          const r = await fetch(`${API_BASE}/pdfs`, {
+            method: "POST",
+            headers: authHeaders(),
+            body: dados,
+          });
+          if (r.status === 401) return sessaoExpirada();
+          const resposta = await r.json();
+          if (!r.ok) throw new Error(resposta.detail || "Erro ao enviar");
+          criarCartao(resposta);
+        } catch (e) {
+          mostrarMensagem(e.message);
+        }
+        inputPDF.value = "";
+      });
+
+      carregarPDFs();
+    </script>
+  </body>
+</html>
