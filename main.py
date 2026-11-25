@@ -11,7 +11,7 @@ import uuid
 from collections import deque
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional
+from typing import Literal, Optional
 
 import uvicorn as uvicon
 from fastapi import Depends, FastAPI, File, Header, HTTPException, Request, UploadFile
@@ -63,6 +63,7 @@ DADOS_DIR.mkdir(exist_ok=True)
 USUARIOS_JSON = DADOS_DIR / "usuarios.json"  # contas (senha só em hash)
 SESSOES_JSON = DADOS_DIR / "sessoes.json"  # tokens de login (só o hash)
 PDFS_JSON = DADOS_DIR / "pdfs.json"  # dono e estado de cada PDF
+REACOES_JSON = DADOS_DIR / "reacoes.json"  # votos por PDF e conta
 
 ITERACOES_HASH = 200_000
 trava = threading.RLock()
@@ -107,6 +108,10 @@ class Cadastro(BaseModel):
 class Login(BaseModel):
     nome: str = Field(min_length=1, max_length=40)
     senha: str = Field(min_length=1, max_length=128)
+
+
+class Reacao(BaseModel):
+    valor: Literal["curtir", "nao_curtir"]
 
 
 # ---------- Utilidades ----------
@@ -231,6 +236,14 @@ def usuario_atual(authorization: Optional[str] = Header(default=None)) -> dict:
     }
 
 
+def usuario_opcional(
+    authorization: Optional[str] = Header(default=None),
+) -> Optional[dict]:
+    if authorization is None:
+        return None
+    return usuario_atual(authorization)
+
+
 @app.post("/cadastro", status_code=201)
 def cadastrar(corpo: Cadastro, request: Request):
     ip = ip_cliente(request)
@@ -337,7 +350,23 @@ def enviar_arquivo(caminho: Path, meta: dict) -> FileResponse:
     )
 
 
-def item_publico(pdf_id: str, meta: dict, usuarios: dict) -> dict:
+def resumo_reacoes(votos: dict, chave_usuario_atual: Optional[str] = None) -> dict:
+    return {
+        "curtidas": sum(1 for voto in votos.values() if voto == "curtir"),
+        "nao_curtidas": sum(
+            1 for voto in votos.values() if voto == "nao_curtir"
+        ),
+        "reacao_usuario": votos.get(chave_usuario_atual),
+    }
+
+
+def item_publico(
+    pdf_id: str,
+    meta: dict,
+    usuarios: dict,
+    reacoes: dict,
+    chave_usuario_atual: Optional[str],
+) -> dict:
     dono = usuarios.get(meta["dono"], {})
     return {
         "id": pdf_id,
@@ -345,14 +374,24 @@ def item_publico(pdf_id: str, meta: dict, usuarios: dict) -> dict:
         "autor": dono.get("nome", "Anônimo"),
         "perfil_id": dono.get("perfil_id"),
         "data": meta.get("data_compartilhado") or meta["data"],
+        **resumo_reacoes(reacoes.get(pdf_id, {}), chave_usuario_atual),
     }
 
 
-def listar_publicos(filtro_dono: Optional[str] = None) -> list:
+def listar_publicos(
+    filtro_dono: Optional[str] = None, usuario: Optional[dict] = None
+) -> list:
     pdfs = ler_json(PDFS_JSON, {})
     usuarios = ler_json(USUARIOS_JSON, {})
+    reacoes = ler_json(REACOES_JSON, {})
     itens = [
-        item_publico(pdf_id, meta, usuarios)
+        item_publico(
+            pdf_id,
+            meta,
+            usuarios,
+            reacoes,
+            usuario["chave"] if usuario else None,
+        )
         for pdf_id, meta in pdfs.items()
         if meta.get("compartilhado")
         and (filtro_dono is None or meta["dono"] == filtro_dono)
@@ -454,6 +493,9 @@ def apagar_pdf(pdf_id: str, usuario: dict = Depends(usuario_atual)):
         pdfs = ler_json(PDFS_JSON, {})
         if pdfs.pop(pdf_id, None) is not None:
             salvar_json(PDFS_JSON, pdfs)
+        reacoes = ler_json(REACOES_JSON, {})
+        if reacoes.pop(pdf_id, None) is not None:
+            salvar_json(REACOES_JSON, reacoes)
     return {"ok": True}
 
 
@@ -491,8 +533,36 @@ def abrir_pdf_publico(pdf_id: str):
 
 
 @app.get("/compartilhados")
-def listar_compartilhados():
-    return listar_publicos()
+def listar_compartilhados(
+    usuario: Optional[dict] = Depends(usuario_opcional),
+):
+    return listar_publicos(usuario=usuario)
+
+
+@app.post("/publico/{pdf_id}/reacao")
+def registrar_reacao(
+    pdf_id: str,
+    corpo: Reacao,
+    usuario: dict = Depends(usuario_atual),
+):
+    carregar_pdf(pdf_id)
+    with trava:
+        pdfs = ler_json(PDFS_JSON, {})
+        meta = pdfs.get(pdf_id)
+        if not meta or not meta.get("compartilhado"):
+            raise HTTPException(404, "PDF não encontrado")
+
+        reacoes = ler_json(REACOES_JSON, {})
+        votos = reacoes.setdefault(pdf_id, {})
+        if votos.get(usuario["chave"]) == corpo.valor:
+            votos.pop(usuario["chave"])
+        else:
+            votos[usuario["chave"]] = corpo.valor
+
+        if not votos:
+            reacoes.pop(pdf_id, None)
+        salvar_json(REACOES_JSON, reacoes)
+        return resumo_reacoes(votos, usuario["chave"])
 
 
 @app.get("/usuarios/{nome}/compartilhados")
